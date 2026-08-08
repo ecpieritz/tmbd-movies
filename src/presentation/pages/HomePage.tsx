@@ -1,13 +1,27 @@
+import { useCallback } from 'react';
+
 import { RequestErrorState } from '@/presentation/components/feedback/RequestErrorState';
+import type { MovieCardAction } from '@/presentation/components/movies/MovieCard';
 import { MovieGrid } from '@/presentation/components/movies/MovieGrid';
 import { MovieGridSkeleton } from '@/presentation/components/movies/MovieGridSkeleton';
 import { Pagination } from '@/presentation/components/navigation/Pagination';
+import type { Movie } from '@/domain/movies/entities/Movie';
+import { useFavorites } from '@/presentation/hooks/useFavorites';
 import { usePopularMovies } from '@/presentation/hooks/usePopularMovies';
 
 const movieCountFormatter = new Intl.NumberFormat('pt-BR');
 
 export function HomePage() {
   const { changePage, retry, state } = usePopularMovies();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const getFavoriteAction = useCallback(
+    (movie: Movie): MovieCardAction => ({
+      isFavorite: isFavorite(movie.id),
+      onClick: toggleFavorite,
+      type: 'favorite',
+    }),
+    [isFavorite, toggleFavorite],
+  );
 
   return (
     <section aria-labelledby="popular-movies-title" className="py-6 sm:py-8">
@@ -50,7 +64,11 @@ export function HomePage() {
 
       {state.status === 'success' && state.movies.length > 0 ? (
         <>
-          <MovieGrid movies={state.movies} ariaLabel="Filmes populares" />
+          <MovieGrid
+            movies={state.movies}
+            ariaLabel="Filmes populares"
+            getAction={getFavoriteAction}
+          />
 
           {state.totalPages > 1 ? (
             <div className="mt-8 border-t border-divider pt-6">
