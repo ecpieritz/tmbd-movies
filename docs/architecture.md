@@ -44,3 +44,9 @@ flowchart LR
 
 Cross-directory imports use the `@/` alias. ESLint enforces the dependency rule and rejects imports
 that point from an inner layer to an outer layer.
+
+## Server boundary
+
+The `server/` directory is a small backend-for-frontend and is kept outside the browser application.
+It owns the TMDB credential and exposes only the API routes required by the UI. Client code must call
+`/api/tmdb` and must never receive or import server environment variables.
