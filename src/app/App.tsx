@@ -1,5 +1,7 @@
-import { WelcomePage } from '@/presentation/pages/WelcomePage';
+import { RouterProvider } from 'react-router/dom';
+
+import { appRouter } from '@/app/router/appRouter';
 
 export function App() {
-  return <WelcomePage />;
+  return <RouterProvider router={appRouter} />;
 }
