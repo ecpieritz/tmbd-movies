@@ -1,11 +1,68 @@
-import { PagePlaceholder } from '@/presentation/components/layout/PagePlaceholder';
+import { RequestErrorState } from '@/presentation/components/feedback/RequestErrorState';
+import { MovieGrid } from '@/presentation/components/movies/MovieGrid';
+import { MovieGridSkeleton } from '@/presentation/components/movies/MovieGridSkeleton';
+import { Pagination } from '@/presentation/components/navigation/Pagination';
+import { usePopularMovies } from '@/presentation/hooks/usePopularMovies';
+
+const movieCountFormatter = new Intl.NumberFormat('pt-BR');
 
 export function HomePage() {
+  const { changePage, retry, state } = usePopularMovies();
+
   return (
-    <PagePlaceholder
-      eyebrow="Home"
-      title="Popular movies"
-      description="Popular movies will be displayed here when the catalog is connected."
-    />
+    <section aria-labelledby="popular-movies-title" className="py-6 sm:py-8">
+      <header className="mb-6 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="text-sm font-semibold tracking-wider text-brand uppercase">Explorar</p>
+          <h1
+            id="popular-movies-title"
+            className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl"
+          >
+            Filmes populares
+          </h1>
+        </div>
+
+        {state.status === 'success' && state.totalResults > 0 ? (
+          <p className="text-sm text-content-muted">
+            {movieCountFormatter.format(state.totalResults)} filmes encontrados
+          </p>
+        ) : null}
+      </header>
+
+      {state.status === 'loading' ? <MovieGridSkeleton /> : null}
+
+      {state.status === 'error' ? (
+        <RequestErrorState
+          title="Não foi possível carregar os filmes"
+          description="Confira sua conexão e tente novamente em alguns instantes."
+          onRetry={retry}
+        />
+      ) : null}
+
+      {state.status === 'success' && state.movies.length === 0 ? (
+        <div className="rounded-card border border-divider bg-panel px-6 py-12 text-center">
+          <h2 className="text-lg font-semibold">Nenhum filme disponível</h2>
+          <p className="mt-2 text-sm text-content-muted">
+            Não encontramos filmes populares para exibir agora.
+          </p>
+        </div>
+      ) : null}
+
+      {state.status === 'success' && state.movies.length > 0 ? (
+        <>
+          <MovieGrid movies={state.movies} ariaLabel="Filmes populares" />
+
+          {state.totalPages > 1 ? (
+            <div className="mt-8 border-t border-divider pt-6">
+              <Pagination
+                currentPage={state.page}
+                totalPages={state.totalPages}
+                onPageChange={changePage}
+              />
+            </div>
+          ) : null}
+        </>
+      ) : null}
+    </section>
   );
 }

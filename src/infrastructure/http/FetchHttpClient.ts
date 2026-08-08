@@ -28,7 +28,7 @@ export class FetchHttpClient implements HttpClient {
     let response: Response;
 
     try {
-      response = await this.fetchImplementation(url, {
+      response = await this.fetchImplementation.call(globalThis, url, {
         method: 'GET',
         headers: { accept: 'application/json' },
         signal: options.signal,
@@ -43,8 +43,6 @@ export class FetchHttpClient implements HttpClient {
       });
     }
 
-    const payload = await this.parseResponse(response);
-
     if (!response.ok) {
       throw new HttpRequestError(
         `The API request failed with status ${response.status}.`,
@@ -52,7 +50,7 @@ export class FetchHttpClient implements HttpClient {
       );
     }
 
-    return payload;
+    return this.parseResponse(response);
   }
 
   private createUrl(path: string, query: HttpGetOptions['query']): string {
