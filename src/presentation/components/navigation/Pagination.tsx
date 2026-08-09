@@ -6,7 +6,7 @@ interface PaginationProps {
 }
 
 const paginationButtonClassName =
-  'rounded-control border border-divider bg-card px-4 py-2 text-sm font-semibold text-content transition-colors hover:border-brand hover:bg-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-divider disabled:hover:bg-card';
+  'min-h-11 rounded-control border border-divider bg-card px-3 py-2 text-sm font-semibold text-content transition-colors hover:border-brand hover:bg-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-divider disabled:hover:bg-card sm:px-4';
 
 export function Pagination({
   currentPage,
@@ -18,7 +18,10 @@ export function Pagination({
   const isNextDisabled = disabled || currentPage >= totalPages;
 
   return (
-    <nav aria-label="Paginação dos filmes" className="flex items-center justify-center gap-4">
+    <nav
+      aria-label="Paginação dos filmes"
+      className="flex items-center justify-center gap-2 sm:gap-4"
+    >
       <button
         type="button"
         disabled={isPreviousDisabled}

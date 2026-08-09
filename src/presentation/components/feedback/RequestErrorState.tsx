@@ -24,7 +24,7 @@ export function RequestErrorState({ description, onRetry, title }: RequestErrorS
       <button
         type="button"
         onClick={onRetry}
-        className="mt-6 rounded-control bg-brand px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel focus-visible:outline-none"
+        className="mt-6 min-h-11 rounded-control bg-brand-strong px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel focus-visible:outline-none"
       >
         Tentar novamente
       </button>

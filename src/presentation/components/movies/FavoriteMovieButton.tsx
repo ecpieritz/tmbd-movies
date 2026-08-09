@@ -32,7 +32,7 @@ export function FavoriteMovieButton({ isFavorite, movie, onToggle }: FavoriteMov
       className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-control px-5 py-3 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 focus-visible:ring-offset-page focus-visible:outline-none ${
         isFavorite
           ? 'border border-danger bg-danger/10 text-danger hover:bg-danger/20'
-          : 'bg-danger text-white hover:bg-danger/90'
+          : 'bg-danger-strong text-white hover:bg-danger-hover'
       }`}
     >
       <HeartIcon filled={isFavorite} />

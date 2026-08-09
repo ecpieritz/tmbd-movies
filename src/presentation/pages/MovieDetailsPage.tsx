@@ -63,7 +63,7 @@ function InvalidMovieState() {
       </p>
       <Link
         to="/"
-        className="mt-6 rounded-control bg-brand px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page focus-visible:outline-none"
+        className="mt-6 inline-flex min-h-11 items-center rounded-control bg-brand-strong px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page focus-visible:outline-none"
       >
         Explorar filmes
       </Link>
@@ -94,7 +94,7 @@ function MovieDetailsContent({ movie }: { readonly movie: MovieDetails }) {
             {movie.genres.map((genre) => (
               <li
                 key={genre.id}
-                className="rounded-full bg-brand px-3 py-1 text-xs font-semibold text-white"
+                className="rounded-full bg-brand-strong px-3 py-1 text-xs font-semibold text-white"
               >
                 {genre.name}
               </li>

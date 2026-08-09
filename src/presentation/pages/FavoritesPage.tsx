@@ -52,7 +52,7 @@ function EmptyFavoritesState() {
       </p>
       <Link
         to="/"
-        className="mt-6 rounded-control bg-brand px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page focus-visible:outline-none"
+        className="mt-6 inline-flex min-h-11 items-center rounded-control bg-brand-strong px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page focus-visible:outline-none"
       >
         Explorar filmes
       </Link>
@@ -93,13 +93,18 @@ export function FavoritesPage() {
           id="favorite-sort"
           value={sort}
           onChange={(event) => setSort(event.target.value as FavoriteSort)}
-          className="rounded-control border border-divider bg-card px-3 py-2 text-sm text-content outline-none focus:border-brand focus:ring-2 focus:ring-brand/30"
+          className="min-h-11 rounded-control border border-divider bg-card px-3 py-2 text-sm text-content outline-none focus:border-brand focus:ring-2 focus:ring-brand/30"
         >
           <option value="title-asc">Título (A–Z)</option>
           <option value="title-desc">Título (Z–A)</option>
           <option value="rating-desc">Nota (maior–menor)</option>
         </select>
       </div>
+
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        {favorites.length} {favorites.length === 1 ? 'filme favorito' : 'filmes favoritos'} na
+        lista.
+      </p>
 
       <MovieGrid
         movies={sortedFavorites}

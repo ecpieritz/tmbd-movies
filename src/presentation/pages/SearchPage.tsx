@@ -112,7 +112,7 @@ export function SearchPage() {
       }
 
       setSearchParameters(nextParameters);
-      globalThis.scrollTo({ behavior: 'smooth', top: 0 });
+      globalThis.scrollTo({ top: 0 });
     },
     [query, setSearchParameters],
   );

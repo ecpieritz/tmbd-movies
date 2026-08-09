@@ -16,10 +16,10 @@ interface GlobalSearchFormProps {
 
 function getNavigationClassName({ isActive }: NavLinkRenderProps): string {
   const baseClassName =
-    'rounded-control px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand';
+    'inline-flex min-h-11 items-center rounded-control px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel';
 
   return isActive
-    ? `${baseClassName} bg-brand text-white`
+    ? `${baseClassName} bg-brand-strong text-white`
     : `${baseClassName} text-content-muted hover:bg-card hover:text-content`;
 }
 
@@ -85,13 +85,13 @@ function GlobalSearchForm({ initialQuery }: GlobalSearchFormProps) {
           autoComplete="off"
           enterKeyHint="search"
           maxLength={100}
-          className="placeholder:text-content-subtle w-full rounded-full border border-divider bg-card py-2.5 pr-11 pl-4 text-sm text-content transition outline-none focus:border-brand focus:ring-2 focus:ring-brand/30"
+          className="w-full rounded-full border border-divider bg-card py-2.5 pr-11 pl-4 text-sm text-content transition outline-none placeholder:text-content-subtle focus:border-brand focus:ring-2 focus:ring-brand/30"
         />
 
         <button
           type="submit"
           aria-label="Buscar"
-          className="absolute inset-y-0 right-1 flex w-10 items-center justify-center rounded-full text-content-muted transition-colors hover:text-content focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+          className="absolute inset-y-0 right-0 flex min-h-11 w-11 items-center justify-center rounded-full text-content-muted transition-colors hover:text-content focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-card focus-visible:outline-none"
         >
           <SearchIcon />
         </button>
@@ -112,7 +112,7 @@ export function AppHeader() {
         <Link
           to="/"
           aria-label="MovieDB - Início"
-          className="flex w-fit items-center gap-2 text-xl font-bold text-accent focus-visible:rounded-control focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none"
+          className="flex min-h-11 w-fit items-center gap-2 rounded-control text-xl font-bold text-accent focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel focus-visible:outline-none"
         >
           <MovieIcon />
           <span>MovieDB</span>

@@ -73,7 +73,7 @@ function MovieActionButton({
       aria-pressed={isFavoriteAction ? action.isFavorite : undefined}
       title={label}
       onClick={() => action.onClick(movie)}
-      className="absolute top-2 right-2 z-10 flex size-10 items-center justify-center rounded-full bg-page/90 text-danger shadow-md transition hover:scale-105 hover:bg-page focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-card focus-visible:outline-none"
+      className="absolute top-2 right-2 z-10 flex size-11 items-center justify-center rounded-full bg-page/90 text-danger shadow-md transition hover:bg-page focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-card focus-visible:outline-none motion-safe:hover:scale-105"
     >
       {isFavoriteAction ? <HeartIcon filled={action.isFavorite} /> : <TrashIcon />}
     </button>
@@ -84,7 +84,7 @@ export function MovieCard({ action, movie, titleContent }: MovieCardProps) {
   const detailsPath = `/movie/${movie.id}`;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-card bg-card shadow-card transition duration-200 hover:-translate-y-0.5 hover:shadow-xl">
+    <article className="group flex h-full flex-col overflow-hidden rounded-card bg-card shadow-card transition duration-200 hover:shadow-xl motion-safe:hover:-translate-y-0.5">
       <div className="relative overflow-hidden">
         <Link
           to={detailsPath}
@@ -95,7 +95,7 @@ export function MovieCard({ action, movie, titleContent }: MovieCardProps) {
             path={movie.posterPath}
             alt={`Poster de ${movie.title}`}
             className="aspect-[2/3] w-full"
-            imageClassName="transition duration-300 group-hover:scale-105"
+            imageClassName="transition duration-300 motion-safe:group-hover:scale-105"
           />
         </Link>
 
