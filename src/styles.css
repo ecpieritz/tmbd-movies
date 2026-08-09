@@ -39,6 +39,7 @@
 
   html {
     min-width: 320px;
+    scrollbar-gutter: stable;
     background-color: var(--color-page);
   }
 
