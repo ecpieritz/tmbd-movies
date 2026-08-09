@@ -6,7 +6,7 @@
 | ----------------------- | ---------------------------------------------------------------------------- |
 | Projeto                 | TMDB Movies                                                                  |
 | Repositório             | [github.com/ecpieritz/tmbd-movies](https://github.com/ecpieritz/tmbd-movies) |
-| Aplicação publicada     | [tmbd-movies-gold.vercel.app](https://tmbd-movies-gold.vercel.app/)        |
+| Aplicação publicada     | [tmbd-movies-gold.vercel.app](https://tmbd-movies-gold.vercel.app/)          |
 | Fonte de dados          | The Movie Database (TMDB)                                                    |
 | Idioma da interface     | Português do Brasil                                                          |
 | Persistência do usuário | Armazenamento local do navegador                                             |
