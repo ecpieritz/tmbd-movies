@@ -102,6 +102,7 @@ export function SearchPage() {
   const [searchParameters, setSearchParameters] = useSearchParams();
   const query = searchParameters.get('q')?.trim() ?? '';
   const page = parsePage(searchParameters.get('page'));
+  const hasEnoughCharacters = query.length >= 2;
 
   const changePage = useCallback(
     (nextPage: number) => {
@@ -119,15 +120,15 @@ export function SearchPage() {
 
   return (
     <section aria-labelledby="search-results-title" className="py-6 sm:py-8">
-      {query ? (
+      {hasEnoughCharacters ? (
         <SearchResults key={query} query={query} page={page} onPageChange={changePage} />
       ) : (
         <div className="rounded-card border border-divider bg-panel px-6 py-12 text-center">
           <h1 id="search-results-title" className="text-xl font-semibold">
-            Busque um filme
+            {query ? 'Continue digitando' : 'Busque um filme'}
           </h1>
           <p className="mt-2 text-sm text-content-muted">
-            Digite um título na barra de busca para encontrar filmes.
+            Digite pelo menos dois caracteres para encontrar filmes.
           </p>
         </div>
       )}

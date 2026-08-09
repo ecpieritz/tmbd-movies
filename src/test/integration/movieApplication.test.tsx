@@ -72,7 +72,7 @@ describe('movie application flows', () => {
         total_results: 2,
       }),
     );
-    await user.click(screen.getByRole('button', { name: 'Próxima' }));
+    await user.click(screen.getByRole('button', { name: 'Próxima página' }));
 
     expect(await screen.findByRole('link', { name: 'Matrix Revolutions' })).toBeInTheDocument();
     expect(router.state.location.search).toBe('?q=Matrix&page=2');

@@ -77,7 +77,7 @@ function MovieDetailsContent({ movie }: { readonly movie: MovieDetails }) {
   const imagePath = movie.backdropPath ?? movie.posterPath;
 
   return (
-    <article className="grid gap-8 py-6 sm:py-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(20rem,1fr)] lg:gap-10">
+    <article className="grid gap-8 pt-6 pb-8 sm:pt-8 sm:pb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(20rem,1fr)] lg:gap-10">
       <MovieImage
         path={imagePath}
         size="original"

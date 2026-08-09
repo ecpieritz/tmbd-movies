@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
   Link,
   NavLink,
@@ -12,7 +12,11 @@ import { createMovieSearchPath } from '@/presentation/navigation/createMovieSear
 
 interface GlobalSearchFormProps {
   initialQuery: string;
+  isSearchPage: boolean;
 }
+
+const AUTO_SEARCH_MIN_LENGTH = 2;
+const SEARCH_DEBOUNCE_MS = 350;
 
 function getNavigationClassName({ isActive }: NavLinkRenderProps): string {
   const baseClassName =
@@ -51,14 +55,52 @@ function SearchIcon() {
   );
 }
 
-function GlobalSearchForm({ initialQuery }: GlobalSearchFormProps) {
+function GlobalSearchForm({ initialQuery, isSearchPage }: GlobalSearchFormProps) {
   const navigate = useNavigate();
   const [query, setQuery] = useState(initialQuery);
+  const lastAutomaticQuery = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (lastAutomaticQuery.current === initialQuery) {
+      lastAutomaticQuery.current = null;
+      return;
+    }
+
+    setQuery(initialQuery);
+  }, [initialQuery]);
+
+  useEffect(() => {
+    const normalizedQuery = query.trim();
+    const queryDidNotChange = normalizedQuery === initialQuery;
+    const canStartSearch = normalizedQuery.length >= AUTO_SEARCH_MIN_LENGTH;
+
+    if (queryDidNotChange || (!canStartSearch && !isSearchPage)) {
+      return;
+    }
+
+    const timeoutId = globalThis.setTimeout(() => {
+      const searchPath = createMovieSearchPath(normalizedQuery) ?? '/search';
+
+      lastAutomaticQuery.current = normalizedQuery;
+      void navigate(searchPath, {
+        replace: true,
+        state: { preserveFocus: true },
+      });
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => globalThis.clearTimeout(timeoutId);
+  }, [initialQuery, isSearchPage, navigate, query]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const searchPath = createMovieSearchPath(query);
+    const normalizedQuery = query.trim();
+
+    if (normalizedQuery.length < AUTO_SEARCH_MIN_LENGTH) {
+      return;
+    }
+
+    const searchPath = createMovieSearchPath(normalizedQuery);
 
     if (!searchPath) {
       setQuery('');
@@ -71,7 +113,7 @@ function GlobalSearchForm({ initialQuery }: GlobalSearchFormProps) {
   return (
     <form role="search" onSubmit={handleSubmit} className="w-full">
       <label htmlFor="global-movie-search" className="sr-only">
-        Buscar filmes
+        Buscar filmes. Digite pelo menos dois caracteres.
       </label>
 
       <div className="relative">
@@ -84,6 +126,7 @@ function GlobalSearchForm({ initialQuery }: GlobalSearchFormProps) {
           placeholder="Buscar filmes..."
           autoComplete="off"
           enterKeyHint="search"
+          minLength={AUTO_SEARCH_MIN_LENGTH}
           maxLength={100}
           className="w-full rounded-full border border-divider bg-card py-2.5 pr-11 pl-4 text-sm text-content transition outline-none placeholder:text-content-subtle focus:border-brand focus:ring-2 focus:ring-brand/30"
         />
@@ -120,8 +163,8 @@ export function AppHeader() {
 
         <div className="col-span-2 row-start-2 md:col-span-1 md:col-start-2 md:row-start-1">
           <GlobalSearchForm
-            key={`${location.pathname}:${searchQuery}`}
             initialQuery={searchQuery}
+            isSearchPage={location.pathname === '/search'}
           />
         </div>
 

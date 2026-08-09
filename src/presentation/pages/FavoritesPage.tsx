@@ -69,7 +69,7 @@ export function FavoritesPage() {
         </h1>
       </header>
 
-      <div className="mb-6 flex flex-wrap items-center gap-3 border-y border-divider py-4">
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-divider pb-4">
         <label htmlFor="favorite-sort" className="text-sm font-medium">
           Ordenar por:
         </label>
