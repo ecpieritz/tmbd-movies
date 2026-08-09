@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import type { MovieCardAction } from '@/presentation/components/movies/MovieCard';
 import { MovieGrid } from '@/presentation/components/movies/MovieGrid';
+import { Seo } from '@/presentation/components/seo/Seo';
 import { useFavorites } from '@/presentation/hooks/useFavorites';
 import {
   sortFavoriteMovies,
@@ -56,45 +57,53 @@ export function FavoritesPage() {
     [removeFavorite],
   );
 
-  if (favorites.length === 0) {
-    return <EmptyFavoritesState />;
-  }
-
   return (
-    <section aria-labelledby="favorites-title" className="py-6 sm:py-8">
-      <header className="mb-6">
-        <p className="text-sm font-semibold tracking-wider text-brand uppercase">Sua lista</p>
-        <h1 id="favorites-title" className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
-          Meus filmes favoritos
-        </h1>
-      </header>
-
-      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-divider pb-4">
-        <label htmlFor="favorite-sort" className="text-sm font-medium">
-          Ordenar por:
-        </label>
-        <select
-          id="favorite-sort"
-          value={sort}
-          onChange={(event) => setSort(event.target.value as FavoriteSort)}
-          className="min-h-11 rounded-control border border-divider bg-card px-3 py-2 text-sm text-content outline-none focus:border-brand focus:ring-2 focus:ring-brand/30"
-        >
-          <option value="title-asc">Título (A–Z)</option>
-          <option value="title-desc">Título (Z–A)</option>
-          <option value="rating-desc">Nota (maior–menor)</option>
-        </select>
-      </div>
-
-      <p className="sr-only" aria-live="polite" aria-atomic="true">
-        {favorites.length} {favorites.length === 1 ? 'filme favorito' : 'filmes favoritos'} na
-        lista.
-      </p>
-
-      <MovieGrid
-        movies={sortedFavorites}
-        ariaLabel="Filmes favoritos"
-        getAction={getRemoveAction}
+    <>
+      <Seo
+        title="Meus filmes favoritos"
+        description="Organize e consulte sua lista local de filmes favoritos no TMDB Movies."
+        canonicalPath="/favorites"
+        noIndex
       />
-    </section>
+      {favorites.length === 0 ? (
+        <EmptyFavoritesState />
+      ) : (
+        <section aria-labelledby="favorites-title" className="py-6 sm:py-8">
+          <header className="mb-6">
+            <p className="text-sm font-semibold tracking-wider text-brand uppercase">Sua lista</p>
+            <h1 id="favorites-title" className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+              Meus filmes favoritos
+            </h1>
+          </header>
+
+          <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-divider pb-4">
+            <label htmlFor="favorite-sort" className="text-sm font-medium">
+              Ordenar por:
+            </label>
+            <select
+              id="favorite-sort"
+              value={sort}
+              onChange={(event) => setSort(event.target.value as FavoriteSort)}
+              className="min-h-11 rounded-control border border-divider bg-card px-3 py-2 text-sm text-content outline-none focus:border-brand focus:ring-2 focus:ring-brand/30"
+            >
+              <option value="title-asc">Título (A–Z)</option>
+              <option value="title-desc">Título (Z–A)</option>
+              <option value="rating-desc">Nota (maior–menor)</option>
+            </select>
+          </div>
+
+          <p className="sr-only" aria-live="polite" aria-atomic="true">
+            {favorites.length} {favorites.length === 1 ? 'filme favorito' : 'filmes favoritos'} na
+            lista.
+          </p>
+
+          <MovieGrid
+            movies={sortedFavorites}
+            ariaLabel="Filmes favoritos"
+            getAction={getRemoveAction}
+          />
+        </section>
+      )}
+    </>
   );
 }

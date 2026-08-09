@@ -8,6 +8,12 @@ import { MovieImage } from '@/presentation/components/movies/MovieImage';
 import { MovieRatingBadge } from '@/presentation/components/movies/MovieRatingBadge';
 import { RelatedMoviesSection } from '@/presentation/components/movies/RelatedMoviesSection';
 import { BackButton } from '@/presentation/components/navigation/BackButton';
+import { Seo } from '@/presentation/components/seo/Seo';
+import {
+  createTmdbImageUrl,
+  SITE_URL,
+  type StructuredData,
+} from '@/presentation/components/seo/seoConfig';
 import { useFavorites } from '@/presentation/hooks/useFavorites';
 import { useMovieDetails } from '@/presentation/hooks/useMovieDetails';
 
@@ -26,6 +32,28 @@ function formatReleaseDate(releaseDate: string | null): string {
   const date = new Date(`${releaseDate}T00:00:00Z`);
 
   return Number.isNaN(date.getTime()) ? 'Não informada' : releaseDateFormatter.format(date);
+}
+
+function createMovieDescription(movie: MovieDetails): string {
+  const description = movie.overview.trim() || `Consulte os detalhes e a nota de ${movie.title}.`;
+
+  return description.length <= 155 ? description : `${description.slice(0, 152).trimEnd()}…`;
+}
+
+function createMovieStructuredData(movie: MovieDetails): StructuredData {
+  const imageUrl = createTmdbImageUrl(movie.backdropPath ?? movie.posterPath);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Movie',
+    description: createMovieDescription(movie),
+    ...(movie.genres.length > 0 ? { genre: movie.genres.map((genre) => genre.name) } : {}),
+    ...(imageUrl ? { image: imageUrl } : {}),
+    ...(movie.releaseDate ? { datePublished: movie.releaseDate } : {}),
+    name: movie.title,
+    sameAs: `https://www.themoviedb.org/movie/${movie.id}`,
+    url: `${SITE_URL}/movie/${movie.id}`,
+  };
 }
 
 function MovieDetailsSkeleton() {
@@ -140,6 +168,14 @@ export function MovieDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const { retry, state } = useMovieDetails(id);
   let pageContent: ReactNode;
+  let seo = (
+    <Seo
+      title="Detalhes do filme"
+      description="Consulte sinopse, gêneros, data de lançamento e nota de filmes no TMDB Movies."
+      canonicalPath={id ? `/movie/${id}` : '/movie'}
+      noIndex={state.status === 'invalid'}
+    />
+  );
 
   if (state.status === 'invalid') {
     pageContent = <InvalidMovieState />;
@@ -156,6 +192,18 @@ export function MovieDetailsPage() {
       </div>
     );
   } else {
+    const imageUrl = createTmdbImageUrl(state.movie.backdropPath ?? state.movie.posterPath);
+    seo = (
+      <Seo
+        title={`${state.movie.title}: detalhes`}
+        description={createMovieDescription(state.movie)}
+        canonicalPath={`/movie/${state.movie.id}`}
+        imageUrl={imageUrl}
+        imageAlt={`Imagem do filme ${state.movie.title}`}
+        openGraphType="video.movie"
+        structuredData={createMovieStructuredData(state.movie)}
+      />
+    );
     pageContent = (
       <>
         <MovieDetailsContent movie={state.movie} />
@@ -166,6 +214,7 @@ export function MovieDetailsPage() {
 
   return (
     <>
+      {seo}
       <div className="pt-4 sm:pt-5">
         <BackButton />
       </div>

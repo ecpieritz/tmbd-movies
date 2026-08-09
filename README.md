@@ -12,6 +12,7 @@ local de favoritos usando dados do [The Movie Database (TMDB)](https://www.themo
 - Página de detalhes com gêneros, lançamento, nota, sinopse e filmes relacionados.
 - Favoritos persistidos no navegador, com ordenação e remoção.
 - Layout responsivo, navegação por teclado, gerenciamento de foco e semântica acessível.
+- SEO por rota com canonical, Open Graph, Twitter Cards, JSON-LD, sitemap e diretivas de indexação.
 - Proxy server-side que protege as credenciais e restringe as rotas permitidas do TMDB.
 - Testes unitários e de integração sem requisições externas.
 

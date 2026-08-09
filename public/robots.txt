@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://tmbd-movies-gold.vercel.app/sitemap.xml

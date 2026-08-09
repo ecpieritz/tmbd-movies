@@ -8,6 +8,7 @@ import type { MovieCardAction } from '@/presentation/components/movies/MovieCard
 import { MovieGrid } from '@/presentation/components/movies/MovieGrid';
 import { MovieGridSkeleton } from '@/presentation/components/movies/MovieGridSkeleton';
 import { Pagination } from '@/presentation/components/navigation/Pagination';
+import { Seo } from '@/presentation/components/seo/Seo';
 import { useFavorites } from '@/presentation/hooks/useFavorites';
 import { useSearchMovies } from '@/presentation/hooks/useSearchMovies';
 
@@ -103,6 +104,7 @@ export function SearchPage() {
   const query = searchParameters.get('q')?.trim() ?? '';
   const page = parsePage(searchParameters.get('page'));
   const hasEnoughCharacters = query.length >= 2;
+  const seoTitle = hasEnoughCharacters ? `Busca: “${query.slice(0, 35)}”` : 'Buscar filmes';
 
   const changePage = useCallback(
     (nextPage: number) => {
@@ -119,19 +121,27 @@ export function SearchPage() {
   );
 
   return (
-    <section aria-labelledby="search-results-title" className="py-6 sm:py-8">
-      {hasEnoughCharacters ? (
-        <SearchResults key={query} query={query} page={page} onPageChange={changePage} />
-      ) : (
-        <div className="rounded-card border border-divider bg-panel px-6 py-12 text-center">
-          <h1 id="search-results-title" className="text-xl font-semibold">
-            {query ? 'Continue digitando' : 'Busque um filme'}
-          </h1>
-          <p className="mt-2 text-sm text-content-muted">
-            Digite pelo menos dois caracteres para encontrar filmes.
-          </p>
-        </div>
-      )}
-    </section>
+    <>
+      <Seo
+        title={seoTitle}
+        description="Encontre filmes por título no catálogo do TMDB Movies."
+        canonicalPath="/search"
+        noIndex
+      />
+      <section aria-labelledby="search-results-title" className="py-6 sm:py-8">
+        {hasEnoughCharacters ? (
+          <SearchResults key={query} query={query} page={page} onPageChange={changePage} />
+        ) : (
+          <div className="rounded-card border border-divider bg-panel px-6 py-12 text-center">
+            <h1 id="search-results-title" className="text-xl font-semibold">
+              {query ? 'Continue digitando' : 'Busque um filme'}
+            </h1>
+            <p className="mt-2 text-sm text-content-muted">
+              Digite pelo menos dois caracteres para encontrar filmes.
+            </p>
+          </div>
+        )}
+      </section>
+    </>
   );
 }

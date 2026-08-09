@@ -99,6 +99,14 @@ describe('movie application flows', () => {
       screen.getByText('A amizade entre Elphaba e Glinda transforma o mundo de Oz.'),
     ).toBeInTheDocument();
     expect(await screen.findByRole('link', { name: 'A Noviça Rebelde' })).toBeInTheDocument();
+    expect(document.title).toBe('Wicked: detalhes | TMDB Movies');
+    expect(document.head.querySelector('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      'https://tmbd-movies-gold.vercel.app/movie/101',
+    );
+    expect(document.head.querySelector('script[data-seo-json-ld]')?.textContent).toContain(
+      '"@type":"Movie"',
+    );
 
     const favoriteButton = screen.getByRole('button', { name: 'Adicionar aos favoritos' });
     await user.click(favoriteButton);
