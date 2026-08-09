@@ -30,6 +30,18 @@ const routes: readonly RouteDefinition[] = [
     cacheControl: 'no-store',
   },
   {
+    matches: (pathname) => pathname === '/discover/movie',
+    queryParameters: [
+      ...commonQueryParameters,
+      'page',
+      'include_adult',
+      'include_video',
+      'sort_by',
+      'with_genres',
+    ],
+    cacheControl: 'public, max-age=60, s-maxage=300, stale-while-revalidate=600',
+  },
+  {
     matches: (pathname) => /^\/movie\/[1-9]\d*$/.test(pathname),
     queryParameters: commonQueryParameters,
     cacheControl: 'public, max-age=60, s-maxage=300, stale-while-revalidate=600',
@@ -80,6 +92,25 @@ function validateQueryParameters(url: URL, route: RouteDefinition): Response | u
 
   if (url.pathname.endsWith('/search/movie') && !url.searchParams.get('query')?.trim()) {
     return errorResponse(400, 'MISSING_QUERY', 'A non-empty search query is required.');
+  }
+
+  if (url.pathname.endsWith('/discover/movie')) {
+    const genres = url.searchParams.get('with_genres');
+    const sortBy = url.searchParams.get('sort_by');
+    const includeAdult = url.searchParams.get('include_adult');
+    const includeVideo = url.searchParams.get('include_video');
+
+    if (!genres || !/^[1-9]\d*(\|[1-9]\d*)*$/.test(genres)) {
+      return errorResponse(400, 'INVALID_GENRES', 'At least one valid genre ID is required.');
+    }
+
+    if (sortBy !== 'popularity.desc' || includeAdult !== 'false' || includeVideo !== 'false') {
+      return errorResponse(
+        400,
+        'INVALID_DISCOVERY_FILTER',
+        'The requested discovery filters are not allowed.',
+      );
+    }
   }
 
   return undefined;

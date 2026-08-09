@@ -2,6 +2,7 @@ import type { PaginatedResult } from '@/domain/common/PaginatedResult';
 import type { Movie } from '@/domain/movies/entities/Movie';
 import type { MovieDetails } from '@/domain/movies/entities/MovieDetails';
 import type {
+  MovieDiscoveryRequest,
   MoviePageRequest,
   MovieRepository,
   MovieSearchRequest,
@@ -25,6 +26,28 @@ export class TmdbMovieRepository implements MovieRepository {
     private readonly dataSource: TmdbMovieDataSource,
     private readonly language = DEFAULT_LANGUAGE,
   ) {}
+
+  async discoverMoviesByGenres(request: MovieDiscoveryRequest): Promise<PaginatedResult<Movie>> {
+    assertPositiveInteger(request.page, 'Page');
+
+    const genreIds = [...new Set(request.genreIds)];
+
+    if (genreIds.length === 0) {
+      throw new TypeError('At least one genre ID is required.');
+    }
+
+    genreIds.forEach((genreId) => assertPositiveInteger(genreId, 'Genre ID'));
+
+    return mapTmdbMoviePage(
+      await this.dataSource.discoverMoviesByGenres({
+        genreIds,
+        includeAdult: false,
+        includeVideo: false,
+        language: this.language,
+        page: request.page,
+      }),
+    );
+  }
 
   async getPopularMovies(request: MoviePageRequest): Promise<PaginatedResult<Movie>> {
     assertPositiveInteger(request.page, 'Page');

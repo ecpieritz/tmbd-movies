@@ -18,6 +18,12 @@ export interface TmdbSearchOptions extends TmdbPageOptions {
   readonly query: string;
 }
 
+export interface TmdbDiscoverOptions extends TmdbPageOptions {
+  readonly genreIds: readonly number[];
+  readonly includeAdult: boolean;
+  readonly includeVideo: boolean;
+}
+
 export class TmdbMovieDataSource {
   constructor(private readonly httpClient: HttpClient) {}
 
@@ -26,6 +32,21 @@ export class TmdbMovieDataSource {
       query: {
         language: options.language,
         page: options.page,
+      },
+    });
+
+    return parseTmdbMoviePage(payload);
+  }
+
+  async discoverMoviesByGenres(options: TmdbDiscoverOptions): Promise<TmdbMoviePageDto> {
+    const payload = await this.httpClient.get('/discover/movie', {
+      query: {
+        include_adult: options.includeAdult,
+        include_video: options.includeVideo,
+        language: options.language,
+        page: options.page,
+        sort_by: 'popularity.desc',
+        with_genres: options.genreIds.join('|'),
       },
     });
 

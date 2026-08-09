@@ -1,6 +1,10 @@
-const SKELETON_ITEMS = Array.from({ length: 12 }, (_, index) => index);
+interface MovieGridSkeletonProps {
+  readonly itemCount?: number;
+}
 
-export function MovieGridSkeleton() {
+export function MovieGridSkeleton({ itemCount = 12 }: MovieGridSkeletonProps) {
+  const skeletonItems = Array.from({ length: itemCount }, (_, index) => index);
+
   return (
     <div role="status" aria-live="polite" aria-busy="true">
       <span className="sr-only">Carregando filmes...</span>
@@ -9,7 +13,7 @@ export function MovieGridSkeleton() {
         aria-hidden="true"
         className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
       >
-        {SKELETON_ITEMS.map((item) => (
+        {skeletonItems.map((item) => (
           <li
             key={item}
             className="overflow-hidden rounded-card bg-card shadow-card motion-safe:animate-pulse"
