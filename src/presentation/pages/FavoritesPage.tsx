@@ -1,29 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import type { Movie } from '@/domain/movies/entities/Movie';
 import type { MovieCardAction } from '@/presentation/components/movies/MovieCard';
 import { MovieGrid } from '@/presentation/components/movies/MovieGrid';
 import { useFavorites } from '@/presentation/hooks/useFavorites';
-
-type FavoriteSort = 'rating-desc' | 'title-asc' | 'title-desc';
-
-const titleCollator = new Intl.Collator('pt-BR', { numeric: true, sensitivity: 'base' });
-
-function sortFavoriteMovies(movies: readonly Movie[], sort: FavoriteSort): readonly Movie[] {
-  return [...movies].sort((firstMovie, secondMovie) => {
-    if (sort === 'rating-desc') {
-      return (
-        secondMovie.voteAverage - firstMovie.voteAverage ||
-        titleCollator.compare(firstMovie.title, secondMovie.title)
-      );
-    }
-
-    const titleComparison = titleCollator.compare(firstMovie.title, secondMovie.title);
-
-    return sort === 'title-asc' ? titleComparison : -titleComparison;
-  });
-}
+import {
+  sortFavoriteMovies,
+  type FavoriteSort,
+} from '@/presentation/pages/favorites/sortFavoriteMovies';
 
 function EmptyFavoritesState() {
   return (
