@@ -3,7 +3,7 @@
 Aplicação responsiva para explorar filmes, consultar detalhes, pesquisar títulos e manter uma lista
 local de favoritos usando dados do [The Movie Database (TMDB)](https://www.themoviedb.org/).
 
-**Aplicação publicada:** [tmbd-movies-sigma.vercel.app](https://tmbd-movies-sigma.vercel.app/)
+**Aplicação publicada:** [tmbd-movies-gold.vercel.app](https://tmbd-movies-gold.vercel.app/)
 
 ## Funcionalidades
 
@@ -138,6 +138,7 @@ persistência ficam na infraestrutura; React permanece na apresentação. A comp
 concretas acontece apenas em `app`.
 
 Consulte [docs/architecture.md](docs/architecture.md) para detalhes, decisões e fluxo dos dados.
+A documentação consolidada para apresentação está disponível em [docs/notion.md](docs/notion.md).
 
 ## Testes e qualidade
 
