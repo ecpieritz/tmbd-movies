@@ -5,6 +5,7 @@ import { FavoriteMoviesService } from '@/application/favorites/FavoriteMoviesSer
 import { GetMovieDetailsUseCase } from '@/application/movies/useCases/GetMovieDetails';
 import { GetPopularMoviesUseCase } from '@/application/movies/useCases/GetPopularMovies';
 import { GetRelatedMoviesUseCase } from '@/application/movies/useCases/GetRelatedMovies';
+import { SearchMoviesUseCase } from '@/application/movies/useCases/SearchMovies';
 import { LocalStorageFavoriteMovieRepository } from '@/infrastructure/storage/LocalStorageFavoriteMovieRepository';
 import { createTmdbMovieRepository } from '@/infrastructure/tmdb/createTmdbMovieRepository';
 import { FavoritesProvider } from '@/presentation/providers/FavoritesProvider';
@@ -15,6 +16,7 @@ const movieCatalogServices = Object.freeze({
   getMovieDetails: new GetMovieDetailsUseCase(movieRepository),
   getPopularMovies: new GetPopularMoviesUseCase(movieRepository),
   getRelatedMovies: new GetRelatedMoviesUseCase(movieRepository),
+  searchMovies: new SearchMoviesUseCase(movieRepository),
 });
 const favoriteMoviesService = new FavoriteMoviesService(
   new LocalStorageFavoriteMovieRepository(globalThis.localStorage),
